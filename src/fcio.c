@@ -359,14 +359,6 @@ char asciiToScreencode(byte c)
     return (char)c;
 }
 
-#ifdef __llvm__
-[[deprecated("Use asciiToScreencode() instead.")]]
-#endif
-char asciiToPetsciicode(byte c)
-{
-    return asciiToScreencode(c);
-}
-
 #ifdef __clang__
 void adjustBorders(byte extraRows, __attribute__((unused)) byte extraColumns)
 #else
@@ -757,6 +749,11 @@ void fc_plotScreenChar(byte x, byte y, byte c, byte color, byte exAttr)
     lpoke(gFcioConfig->screenBase + adrOffset + 1, 0);
     lpoke(gFcioConfig->colourBase + adrOffset + 1, color | exAttr);
     lpoke(gFcioConfig->colourBase + adrOffset, 0);
+}
+
+void fc_plotPetsciiChar(byte x, byte y, byte c, byte color, byte exAttr)
+{
+    fc_plotScreenChar(x, y, c, color, exAttr);
 }
 
 byte fc_wherex(void)
