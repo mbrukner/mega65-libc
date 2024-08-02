@@ -356,7 +356,15 @@ char asciiToScreencode(byte c)
     if (c >= 192) {
         return c - 128;
     }
-    return c;
+    return (char)c;
+}
+
+#ifdef __llvm__
+[[deprecated("Use asciiToScreencode() instead.")]]
+#endif
+char asciiToPetsciicode(byte c)
+{
+    return asciiToScreencode(c);
 }
 
 #ifdef __clang__
@@ -781,7 +789,7 @@ void fc_putc(char c)
         return;
     }
 
-    out = asciiToScreencode(c);
+    out = asciiToScreencode((byte)c);
 
     fc_plotScreenChar(gCurrentWin->xc + gCurrentWin->x0,
         gCurrentWin->yc + gCurrentWin->y0, out, gCurrentWin->textcolor,
